@@ -1,1 +1,106 @@
 # CrawlerLearning
+# 反反爬虫配置说明
+
+## 已实现的反反爬虫策略
+
+### 1. User-Agent轮换
+- 7种不同的浏览器User-Agent随机切换
+- 包括Chrome、Firefox、Edge、Safari等
+- 模拟Windows、Mac、Linux不同操作系统
+
+### 2. 完整请求头模拟
+- Accept、Accept-Language、Accept-Encoding
+- Connection、Cache-Control
+- Sec-Fetch-* 系列（模拟真实浏览器）
+- DNT（Do Not Track）
+
+### 3. 智能延迟策略
+- 随机延迟1-3秒（可配置）
+- 页面间延迟2-4秒
+- 错误后延迟2-4秒或5-10秒
+
+### 4. Session和Cookie管理
+- 使用Session保持Cookie状态
+- 自动处理Set-Cookie
+- 维持会话连续性
+
+### 5. 自动重试机制
+- 最多重试3次
+- 指数退避策略
+- 针对429、500、502、503、504状态码
+
+### 6. 智能错误处理
+- 捕获超时、连接错误
+- 识别403（被拒绝）、429（频率限制）
+- 自动调整策略
+
+## 进阶反反爬虫策略（可选）
+
+### 添加代理IP支持
+
+在 `safe_request` 方法中添加：
+
+```python
+# 代理池配置
+proxies = {
+    'http': 'http://代理IP:端口',
+    'https': 'https://代理IP:端口',
+}
+
+response = self.session.get(url, proxies=proxies, **kwargs)
+```
+
+### 使用Selenium模拟真实浏览器
+
+```python
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
+options = Options()
+options.add_argument('--headless')
+options.add_argument('--disable-blink-features=AutomationControlled')
+driver = webdriver.Chrome(options=options)
+```
+
+### 使用验证码识别服务
+
+- 集成打码平台API
+- 使用OCR库（如tesseract）
+- AI模型识别（如ddddocr）
+
+### JavaScript渲染
+
+对于需要JS渲染的页面：
+- 使用Selenium + ChromeDriver
+- 使用Playwright
+- 使用requests-html
+
+### IP代理池
+
+推荐免费代理池：
+- 快代理
+- 西刺代理
+- 站大爷
+
+推荐付费代理：
+- 阿布云
+- 芝麻代理
+- 讯代理
+
+## 使用建议
+
+1. **降低爬取频率**：增加延迟时间
+2. **分布式爬取**：使用多台机器或云服务
+3. **遵守robots.txt**：尊重网站规则
+4. **合理使用数据**：仅用于学习研究
+
+## 法律声明
+
+本爬虫仅供学习研究使用，请遵守以下原则：
+- 遵守《网络安全法》
+- 遵守《数据安全法》
+- 遵守《个人信息保护法》
+- 尊重网站robots.txt协议
+- 不用于商业目的
+- 不过度占用服务器资源
+
